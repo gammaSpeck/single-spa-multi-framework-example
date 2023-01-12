@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Root Config</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/regenerator-runtime@0.13.7/runtime.min.js"></script>
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https: 127.0.0.1:*; script-src 'unsafe-inline' 'unsafe-eval' https: http: blob: data: 127.0.0.1:*; connect-src https: 127.0.0.1:* ws://127.0.0.1:*; style-src 'unsafe-inline' https: 127.0.0.1:*; object-src 'none';"
+    />
+
+    <!-- ES MODULE SHIM -->
+    <script
+      async
+      src="https://ga.jspm.io/npm:es-module-shims@1.5.4/dist/es-module-shims.js"
+    ></script>
+
+    <% if (isLocal) { %>
+    <script type="importmap-shim" defer>
+      {
+        "imports": {
+          "@vite-single-spa/root-config": "//127.0.0.1:3000/vite-single-spa-root-config.ts",
+          "@vite-single-spa/react": "//127.0.0.1:3002/vite-single-spa-react.ts",
+          "@vite-single-spa/vue": "//127.0.0.1:3003/vite-single-spa-vue.ts"
+        }
+      }
+    </script>
+    <% } else { %>
+    <script type="importmap-shim" defer>
+      {
+        "imports": {
+          "@vite-single-spa/root-config": "/vite-single-spa-root-config.js",
+          "@vite-single-spa/react": "<%= VITE_MF_REACT_PROD_DOMAIN %>/vite-single-spa-react.js",
+          "@vite-single-spa/vue": "<%= VITE_MF_VUE_PROD_DOMAIN %>/vite-single-spa-react.js"
+        }
+      }
+    </script>
+
+    <link
+      rel="preload"
+      href="<%= VITE_MF_REACT_PROD_DOMAIN %>/assets/style.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="<%= VITE_MF_REACT_PROD_DOMAIN %>/assets/style.css"
+      />
+    </noscript>
+    <% } %>
+
+    <link rel="icon" sizes="192x192" href="/logo.svg" />
+    <link href="./index.css" rel="stylesheet" />
+    <link href="./top.css" rel="stylesheet" />
+
+    <template id="single-spa-layout">
+      <single-spa-router>
+        <div id="layout">
+          <div id="nav">
+            <div>
+              <a href="/" style="margin: 10px">
+                <img src="/logo.svg" width="30" height="30" />
+              </a>
+              <a href="/react" style="margin: 10px">React</a>
+              <a href="/vue" style="margin: 10px">Vue</a>
+            </div>
+          </div>
+
+          <main>
+            <route path="vue">
+              <application name="@vite-single-spa/vue"></application>
+            </route>
+            <route path="react">
+              <application name="@vite-single-spa/react"></application>
+            </route>
+
+            <route default>
+              <!-- <application name="@vite-single-spa/root-config"></application> -->
+              <div id="top">
+                <h1>Welcome to the example of Vite + single-spa!</h1>
+                <a href="/react">Go to React app</a>
+                <br />
+                <a href="/vue">Go to Vue app</a>
+              </div>
+            </route>
+          </main>
+        </div>
+      </single-spa-router>
+    </template>
+  </head>
+
+  <body>
+    <div id="loading">
+      <noscript>
+        <canvas />
+      </noscript>
+    </div>
+
+    <script
+      type="module-shim"
+      src="/vite-single-spa-root-config.<%= isLocal ? 'ts' : 'js' %>"
+    />
+  </body>
+</html>

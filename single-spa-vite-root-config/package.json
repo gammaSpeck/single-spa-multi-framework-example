@@ -1,0 +1,23 @@
+{
+  "name": "@vite-single-spa/root-config",
+  "scripts": {
+    "start": "vite --port 9000",
+    "build": "vite build",
+    "preview": "vite preview --port 9000"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.5",
+    "concurrently": "^6.5.1",
+    "dotenv": "^16.0.0",
+    "serve": "^12.0.1",
+    "single-spa-layout": "^2.1.0",
+    "ts-config-single-spa": "^3.0.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0",
+    "vite-plugin-dynamic-import": "^1.0.0",
+    "vite-plugin-ejs": "^1.5.0"
+  },
+  "dependencies": {
+    "single-spa": "^5.9.4"
+  }
+}
